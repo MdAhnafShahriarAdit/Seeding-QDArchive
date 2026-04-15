@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 
 archive/
-data/metadata.db
+files/
+data/ada_pages/
