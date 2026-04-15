@@ -110,7 +110,7 @@ python scripts/export_csv.py
 
 ---
 
-Output
+## Output
 
 The pipeline produces:
 
@@ -120,17 +120,19 @@ The pipeline produces:
   
 ---
 
-Key Features
-Modular pipeline design
-Scalable metadata harvesting using OAI-PMH
-Automated file discovery and download
-Robust file validation
-Structured data storage
-CSV export for downstream processing
+## Key Features
+
+- Modular pipeline design
+- Scalable metadata harvesting using OAI-PMH
+- Automated file discovery and download
+- Robust file validation
+- Structured data storage
+- CSV export for downstream processing
 
 ---
 
-Notes
+## Notes
+
 The pipeline performs a full metadata harvest due to OAI-PMH limitations (no server-side keyword filtering)
 Processing time depends on repository size
 Downloaded files are validated to avoid corrupted or blocked responses
