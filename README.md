@@ -137,3 +137,39 @@ Downloaded files are validated to avoid corrupted or blocked responses
 
 ---
 
+## Results Summary
+
+The pipeline was executed on Repository 16 (uni-halle) using the OAI-PMH harvesting approach.
+
+### Harvesting Results
+
+- Total projects collected: **855**
+- Total files discovered: **950**
+- Successfully downloaded files: **948**
+- Failed downloads: **2**
+
+### Metadata Collected
+
+- Keywords extracted: **2849**
+- Licenses recorded: **851**
+- People/roles identified: **3424**
+
+### Data Size
+
+- Total downloaded data: approximately **6 GB**
+
+---
+
+## Interpretation
+
+The pipeline successfully performed large-scale metadata harvesting and file acquisition from the repository.
+
+This demonstrates:
+
+- Efficient OAI-PMH harvesting across thousands of records
+- Reliable extraction of file links from project pages
+- Stable large-scale downloading with minimal failure rate
+- Structured storage of metadata for further analysis
+
+The modular design allows this pipeline to be extended to additional repositories with minimal changes.
+
