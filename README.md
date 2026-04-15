@@ -28,34 +28,37 @@ This implementation focuses on:
 - Project pages are parsed to extract downloadable file links
 
 ---
-
 ## Project Structure
+
+```text
 qdarchive-project/
 │
 ├── scripts/
-│ ├── config.py
-│ ├── database.py
-│ ├── harvesters.py
-│ ├── pipeline.py
-│ ├── summary.py
-│ └── export_csv.py
+│   ├── config.py
+│   ├── database.py
+│   ├── harvesters.py
+│   ├── pipeline.py
+│   ├── summary.py
+│   └── export_csv.py
 │
 ├── data/
-│ ├── metadata.db
-│ └── csv/
-│ ├── projects.csv
-│ ├── files.csv
-│ ├── keywords.csv
-│ ├── licenses.csv
-│ └── person_role.csv
+│   ├── metadata.db
+│   └── csv/
+│       ├── projects.csv
+│       ├── files.csv
+│       ├── keywords.csv
+│       ├── licenses.csv
+│       └── person_role.csv
 │
 ├── files/
-│ └── uni-halle/
-│ └── [downloaded project folders]
+│   └── uni-halle/
+│       └── [downloaded project folders]
 │
 ├── README.md
 ├── requirements.txt
 └── .gitignore
+```
+
 ---
 
 ## Database Schema
