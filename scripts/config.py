@@ -1,6 +1,6 @@
 from pathlib import Path
 
-DB_PATH = Path("data/metadata.db")
+DB_PATH = Path("data/23206422-sq26.db")
 FILES_ROOT = Path("files")
 CSV_ROOT = Path("data/csv")
 
