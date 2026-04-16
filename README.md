@@ -165,6 +165,18 @@ The pipeline produces:
 
 The pipeline was executed on two repositories.
 
+### Overall Database Summary
+
+Final records stored in the database:
+
+Total projects: 908
+Total files: 1527
+Total keywords: 3565
+Total licenses: 904
+Total people/roles: 3550
+
+These values represent the complete dataset collected across both repositories.
+
 ### Repository 16 (uni-halle) Harvesting Results
 
 - Total projects collected: **855**
