@@ -211,8 +211,8 @@ These values represent the complete dataset collected across both repositories.
 
 ### File  Status
 Files detected but marked as:
-status = RESTRICTED
-status_note = visible_restricted_file_row
+- status = RESTRICTED
+- status_note = visible_restricted_file_row
 
 No files downloaded due to repository restrictions
 
