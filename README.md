@@ -26,6 +26,9 @@ This implementation focuses on:
 - **Repository 16 (uni-halle)**
 - Accessed via **OAI-PMH interface**
 - Project pages are parsed to extract downloadable file links
+- Repository 7 (ADA Dataverse)
+- Accessed via seed URLs and browser-based extraction (Selenium)
+- Dataset pages are parsed to extract metadata and visible file listings
 
 ---
 ## Project Structure
@@ -38,11 +41,12 @@ qdarchive-project/
 │   ├── database.py
 │   ├── harvesters.py
 │   ├── pipeline.py
+│   ├── acquire_ada_seed.py
 │   ├── summary.py
 │   └── export_csv.py
 │
 ├── data/
-│   ├── metadata.db
+│   ├── 23206422-sq26.db
 │   └── csv/
 │       ├── projects.csv
 │       ├── files.csv
@@ -51,8 +55,8 @@ qdarchive-project/
 │       └── person_role.csv
 │
 ├── files/
-│   └── uni-halle/
-│       └── [downloaded project folders]
+│   ├── uni-halle/
+│   └── ada/
 │
 ├── README.md
 ├── requirements.txt
@@ -95,17 +99,28 @@ The pipeline stores all information in a normalized SQLite database:
 
 ### Step 6 – Data Storage
 - Stores metadata and file information in SQLite database
+  
+### Step 7 – ADA Processing (Repository 7)
+- Uses Selenium to render dataset pages
+- Extracts metadata and visible file rows
+- Identifies restricted files and stores them in database
+
+
 
 ---
 
 ## Running the Pipeline
 
-### 1. Initialize and run pipeline
+### 1. Run Repository 16 pipeline
 python scripts/pipeline.py
 
-### 2. Generate summary
+### 2. Run ADA (Repository 7) acquisition
+python scripts/acquire_ada_seed.py
 
-### 3. Export CSV files
+### 3. Generate summary
+python scripts/summary.py
+
+### 4. Export CSV files
 python scripts/export_csv.py
 
 ---
@@ -114,9 +129,10 @@ python scripts/export_csv.py
 
 The pipeline produces:
 
-- Structured SQLite database (metadata.db)
+- Structured SQLite database (23206422-sq26.db)
 - CSV exports for analysis
-- Downloaded dataset files organized by project
+- Downloaded dataset files (Repository 16)
+- Metadata-only file records for restricted repositories (Repository 7)
   
 ---
 
@@ -124,6 +140,7 @@ The pipeline produces:
 
 - Modular pipeline design
 - Scalable metadata harvesting using OAI-PMH
+- Browser-based extraction using Selenium
 - Automated file discovery and download
 - Robust file validation
 - Structured data storage
@@ -133,17 +150,22 @@ The pipeline produces:
 
 ## Notes
 
-The pipeline performs a full metadata harvest due to OAI-PMH limitations (no server-side keyword filtering)
-Processing time depends on repository size
-Downloaded files are validated to avoid corrupted or blocked responses
+- The pipeline performs a full metadata harvest due to OAI-PMH limitations (no server-side keyword filtering)
+- Processing time depends on repository size
+- Downloaded files are validated to avoid corrupted or blocked responses
+- Repository 16 supports full metadata and file access
+- Repository 7 (ADA) enforces strict access control on files
+- ADA uses a strong server-side system that distinguishes between human users and automated requests
+- Despite multiple approaches (requests and Selenium), file downloads from ADA were not possible
+- Attempts were made to contact ADA administrators for access permission, but no response was received during the project timeline
 
 ---
 
 ## Results Summary
 
-The pipeline was executed on Repository 16 (uni-halle) using the OAI-PMH harvesting approach.
+The pipeline was executed on two repositories.
 
-### Harvesting Results
+### Repository 16 (uni-halle) Harvesting Results
 
 - Total projects collected: **855**
 - Total files discovered: **950**
@@ -156,22 +178,49 @@ The pipeline was executed on Repository 16 (uni-halle) using the OAI-PMH harvest
 - Licenses recorded: **851**
 - People/roles identified: **3424**
 
-### Data Size
+### Repository 7 (ADA Dataverse) Acquisition Results
+- Total ADA projects processed: 53
+- Dataset pages successfully accessed using Selenium
+- File rows extracted and recorded in database
 
-- Total downloaded data: approximately **6 GB**
+### File  Status
+Files detected but marked as:
+status = RESTRICTED
+status_note = visible_restricted_file_row
+
+No files downloaded due to repository restrictions
+
+### Metadata Collected
+- Keywords, licenses, and authors successfully extracted
+- File-level metadata recorded without download
 
 ---
 
 ## Interpretation
 
-The pipeline successfully performed large-scale metadata harvesting and file acquisition from the repository.
+Data acquisition is not only a technical problem, but also depends on repository access policies and permissions.
+
+---
+
+### Conclusion
 
 This demonstrates:
 
-- Efficient OAI-PMH harvesting across thousands of records
-- Reliable extraction of file links from project pages
-- Stable large-scale downloading with minimal failure rate
-- Structured storage of metadata for further analysis
+- A complete, scalable data acquisition pipeline
+- Full metadata and file download capabilities for open repositories
+- Adaptation to restricted repositories using browser-based techniques
+- Proper handling and storage of restricted data scenarios
 
-The modular design allows this pipeline to be extended to additional repositories with minimal changes.
+However, Repository 7 illustrates a realistic constraint:
+
+- Strong repository security mechanisms can prevent automated file downloads
+- Access to such datasets requires explicit permission from repository administrators
+
+---
+
+### key Takeway
+
+Automated data pipelines can efficiently extract metadata across repositories.
+
+However, actual data access depends on repository-level permissions, which cannot always be bypassed through technical methods alone.
 
