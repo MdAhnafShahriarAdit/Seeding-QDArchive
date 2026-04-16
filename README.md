@@ -169,11 +169,11 @@ The pipeline was executed on two repositories.
 
 Final records stored in the database:
 
-Total projects: 908
-Total files: 1527
-Total keywords: 3565
-Total licenses: 904
-Total people/roles: 3550
+- Total projects: 908
+- Total files: 1527
+- Total keywords: 3565
+- Total licenses: 904
+- Total people/roles: 3550
 
 These values represent the complete dataset collected across both repositories.
 
@@ -191,7 +191,21 @@ These values represent the complete dataset collected across both repositories.
 - People/roles identified: **3424**
 
 ### Repository 7 (ADA Dataverse) Acquisition Results
-- Total ADA projects processed: 53
+
+- Total projects collected: **53**
+- Total files discovered: **577**
+- Successfully downloaded files: **0**
+- Failed downloads: **577**
+
+### Metadata Collected
+
+- Keywords extracted: **716**
+- Licenses recorded: **53**
+- People/roles identified: **126**
+- Total ADA projects processed: **53**
+- Restricted files: **577**
+- Metadata-only files: **360**
+- Zip Files: **186**
 - Dataset pages successfully accessed using Selenium
 - File rows extracted and recorded in database
 
