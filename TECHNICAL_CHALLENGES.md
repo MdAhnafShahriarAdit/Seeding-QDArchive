@@ -8,8 +8,8 @@ However, despite successfully accessing the dataset pages, all files within ADA 
 
 Each detected file entry was therefore recorded in the database with:
 
-status = RESTRICTED
-status_note = visible_restricted_file_row
+- status = RESTRICTED
+- status_note = visible_restricted_file_row
 
 This reflects that the file exists and is visible, but cannot be accessed without authorization.
 
