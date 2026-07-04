@@ -5,3 +5,8 @@ __pycache__/
 archive/
 files/
 data/ada_pages/
+
+data/23206422-sq26_broken.db
+data/ada_seed_urls.txt
+scripts/extract_ada_links_from_saved_pages.py
+scripts/remove_version_column.py
