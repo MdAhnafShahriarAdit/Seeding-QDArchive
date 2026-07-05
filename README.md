@@ -246,6 +246,69 @@ However, Repository 7 illustrates a realistic constraint:
 
 ### key Takeway
 
+
+---
+
+## Part 2: Classification
+
+Building on the acquisition pipeline from Part 1, Part 2 classifies every collected project into a project type and an ISIC Rev. 5 industry division, using both project metadata and, where available, the actual content of primary data files.
+
+### Overview
+
+Part 2 performs the following steps:
+
+1. Classifies each project into one of four types based on its file extensions
+2. Classifies each project into an ISIC Rev. 5 division (two levels deep: section + division), using a keyword-based classifier enriched with DDC (Dewey Decimal) subject code mapping
+3. Classifies each primary data file individually (not just the project as a whole)
+4. Exports the results as an XLSX table and a PDF report with histograms and ranked class tables, per repository
+
+---
+
+### Project Type Classification
+
+Each project is classified into exactly one of:
+
+- **QDA_PROJECT** – contains a file with a QDA/REFI file extension (e.g. `.qdpx`)
+- **QD_PROJECT** – no QDA file, but contains a primary data file (`.txt`, `.pdf`, `.rtf`, `.doc`, `.docx`)
+- **OTHER_PROJECT** – no primary data file, but contains some other recognizable file type (e.g. `.csv`, `.xlsx`, image/media files)
+- **NOT_A_PROJECT** – no file type could be identified at all
+
+### ISIC Rev. 5 Classification
+
+Each project (and each of its primary data files) is scored against all 81 ISIC Rev. 5 divisions using:
+
+- Keyword matching against project title, description, and keywords
+- A DDC (Dewey Decimal Classification) → ISIC mapping, giving extra weight to `ddc:` keywords present on repository 16 (uni-halle) projects, since these are curated subject codes rather than free text
+- For `QD_PROJECT`/`QDA_PROJECT` types, the actual text content of each primary data file (PDF, DOCX, TXT, RTF) is extracted and classified independently; if a file's content can't be read or doesn't yield a confident match, its classification falls back to the project-level result
+
+The top two matching divisions are recorded as `primary_class` and `secondary_class` (if any).
+
+---
+
+### Project Structure (additions)
+
+```text
+scripts/
+├── classify_project_type.py         # Step 1: QDA/QD/OTHER/NOT_A_PROJECT classification
+├── isic_data.py                     # ISIC Rev. 5 division data + keyword lexicon
+├── ddc_mapping.py                   # DDC subject code -> ISIC division mapping
+├── classify_isic.py                 # Step 2/3: ISIC classification (project + file level)
+├── export_classification_xlsx.py    # Step 4c: XLSX table export
+├── generate_classification_report.py # Step 4d: PDF report with histograms and tables
+└── summary.py                       # extended with classification stats per repository
+
+data/
+├── 23206422-sq26-classification.db  # final classification database
+├── 23206422-classification-table.xlsx
+└── 23206422-classification-report.pdf
+```
+
+---
+
+### Running the Classification Pipeline
+
+Run all of the following from the **repository root** (not from inside `scripts/`):
+
 Automated data pipelines can efficiently extract metadata across repositories.
 
 However, actual data access depends on repository-level permissions, which cannot always be bypassed through technical methods alone.
