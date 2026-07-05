@@ -1,6 +1,8 @@
 import sqlite3
 from pathlib import Path
 
+from isic_data import DIVISIONS
+
 DB_PATH = Path("data/23206422-sq26.db")
 QDA_EXTENSIONS = {".qdpx", ".qdc", ".nvp", ".nvpx", ".atlproj", ".mx", ".mx20", ".mx24"}
 
@@ -100,6 +102,44 @@ def summarize_files(rows):
     }
 
 
+def class_label(code):
+    if not code:
+        return "UNCLASSIFIED (no confident match)"
+    info = DIVISIONS.get(code)
+    return f"{code} - {info['number']} - {info['title']}" if info else code
+
+
+def print_classification_summary(cur, repo_id):
+    """Prints stats using the EXACT field names from the Part 2 Google Form,
+    so this section can be copied straight into the form for this repository."""
+
+    cur.execute("SELECT COUNT(*) FROM projects WHERE repository_id=?", (repo_id,))
+    total = cur.fetchone()[0]
+
+    cur.execute("""
+        SELECT type, COUNT(*) FROM projects
+        WHERE repository_id=? GROUP BY type
+    """, (repo_id,))
+    type_counts = dict(cur.fetchall())
+
+    cur.execute("""
+        SELECT primary_class, COUNT(*) c FROM projects
+        WHERE repository_id=? GROUP BY primary_class ORDER BY c DESC LIMIT 1
+    """, (repo_id,))
+    row = cur.fetchone()
+    dominant = class_label(row[0]) if row else "n/a"
+
+    print("--- Google Form fields for this repository ---")
+    print(f"Total No (number of) projects found:  {total}")
+    print(f"No QDA_PROJECT found:                 {type_counts.get('QDA_PROJECT', 0)}")
+    print(f"No QD_PROJECT found:                  {type_counts.get('QD_PROJECT', 0)}")
+    print(f"No OTHER_PROJECT found:                {type_counts.get('OTHER_PROJECT', 0)}")
+    print(f"No NOT_A_PROJECT found:                {type_counts.get('NOT_A_PROJECT', 0)}")
+    print(f"Comment on projects found (optional):  (your own notes, if any)")
+    print(f"Most common class (across all projects): {dominant}")
+    print()
+
+
 def print_repo_summary(cur, repo_id, repo_name):
     projects = count_projects(cur, repo_id)
     keywords = count_keywords(cur, repo_id)
@@ -127,6 +167,7 @@ def print_repo_summary(cur, repo_id, repo_name):
     print(f"ZIP files:                   {files['zip_count']}")
     print(f"QDA files found inside ZIP:  {files['qda_inside_zip_count']}")
     print()
+    print_classification_summary(cur, repo_id)
 
 
 def print_overall_summary(cur):
