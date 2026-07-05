@@ -244,11 +244,6 @@ However, Repository 7 illustrates a realistic constraint:
 
 ---
 
-### key Takeway
-
-
----
-
 ## Part 2: Classification
 
 Building on the acquisition pipeline from Part 1, Part 2 classifies every collected project into a project type and an ISIC Rev. 5 industry division, using both project metadata and, where available, the actual content of primary data files.
